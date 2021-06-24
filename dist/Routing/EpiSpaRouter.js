@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { StaticRouter, useLocation, Switch, Route } from 'react-router';
+import React from 'react';
+import { StaticRouter, Switch, Route } from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
 import { useEpiserver } from '../Hooks/Context';
 export const Router = (props) => {
@@ -20,18 +20,10 @@ export const Router = (props) => {
     };
     if (epi.isInEditMode() || epi.isEditable())
         return React.createElement(BrowserRouter, Object.assign({}, browserRouterProps), props.children);
-    return React.createElement(BrowserRouter, Object.assign({}, browserRouterProps),
-        React.createElement(ScrollToTop, null, props.children));
+    return React.createElement(BrowserRouter, Object.assign({}, browserRouterProps), props.children);
 };
 Router.displayName = "Optimizely CMS: Router";
 export default Router;
-const ScrollToTop = () => {
-    const { pathname } = useLocation();
-    useEffect(() => {
-        window.scrollTo(0, 0);
-    }, [pathname]);
-    return null;
-};
 export const RoutedContent = (props) => {
     const ctx = useEpiserver();
     const switchProps = { location: props.location };
