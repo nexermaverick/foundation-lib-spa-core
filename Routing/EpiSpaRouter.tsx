@@ -29,11 +29,12 @@ export const Router : React.FunctionComponent<RouterProps> = (props) =>
     if (epi.isInEditMode() || epi.isEditable())
     return <BrowserRouter {...browserRouterProps}>{ props.children }</BrowserRouter>
     
-    return <BrowserRouter {...browserRouterProps}><ScrollToTop>{ props.children }</ScrollToTop></BrowserRouter>
+    return <BrowserRouter {...browserRouterProps}>{ props.children }</BrowserRouter>
 }
 Router.displayName = "Optimizely CMS: Router";
 export default Router;
 
+/*
 const ScrollToTop: React.FC = () => {
     const { pathname } = useLocation();
     
@@ -43,6 +44,7 @@ const ScrollToTop: React.FC = () => {
     
     return null;
 }
+*/
 
 export type RoutedContentProps = SwitchProps & {
     keyPrefix ?:    string,
