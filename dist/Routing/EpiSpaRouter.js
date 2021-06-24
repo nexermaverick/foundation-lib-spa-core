@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { StaticRouter, useHistory, useLocation, Switch, Route } from 'react-router';
+import { StaticRouter, useLocation, Switch, Route } from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
 import { useEpiserver } from '../Hooks/Context';
 export const Router = (props) => {
@@ -21,77 +21,17 @@ export const Router = (props) => {
     if (epi.isInEditMode() || epi.isEditable())
         return React.createElement(BrowserRouter, Object.assign({}, browserRouterProps), props.children);
     return React.createElement(BrowserRouter, Object.assign({}, browserRouterProps),
-        React.createElement(ElementNavigation, null, props.children));
+        React.createElement(ScrollToTop, null, props.children));
 };
 Router.displayName = "Optimizely CMS: Router";
 export default Router;
-const ElementNavigation = (props) => {
-    const history = useHistory();
-    const location = useLocation();
-    const epi = useEpiserver();
-    const config = epi.config();
+const ScrollToTop = () => {
+    const { pathname } = useLocation();
     useEffect(() => {
-        if (epi.isInEditMode() || epi.isServerSideRendering()) {
-            if (epi.isDebugActive())
-                console.info('ElementNavigation: Edit mode, or SSR, so not attaching events');
-            return;
-        }
-        else {
-            if (epi.isDebugActive())
-                console.info('ElementNavigation: Enabling catch-all click handling for navigation');
-        }
-        const onWindowClick = (event) => {
-            const target = event.target;
-            const currentUrl = new URL(window.location.href);
-            let newPath = '';
-            // Loop parents till we find the link
-            let link = target;
-            while (link.parentElement && link.tagName.toLowerCase() !== 'a')
-                link = link.parentElement;
-            // If we have a link, see if we need to navigate
-            if (link.tagName.toLowerCase() === 'a') {
-                const targetUrl = new URL(link.href, currentUrl);
-                // Only act if we remain on the same domain
-                if (targetUrl.origin === currentUrl.origin) {
-                    newPath = targetUrl.pathname;
-                }
-            }
-            // Do not navigate to the same page
-            if (newPath === location.pathname) {
-                if (config.enableDebug)
-                    console.info('ElementNavigation: Ignoring navigation to same path');
-                event.preventDefault();
-                return false;
-            }
-            // Navigate to the new path
-            if (newPath) {
-                if (config.basePath && newPath.substr(0, config.basePath.length) === config.basePath) {
-                    newPath = newPath.substr(config.basePath.length);
-                    if (newPath.substr(0, 1) !== '/')
-                        newPath = '/' + newPath; // Ensure we've an absolute path
-                }
-                history.push(newPath);
-                event.preventDefault();
-                return false;
-            }
-        };
-        try {
-            window.scrollTo(0, 0);
-        }
-        catch (e) {
-            if (epi.isDebugActive())
-                console.warn('ElementNavigation: Failed to scroll to top');
-        }
-        document.addEventListener('click', onWindowClick);
-        return () => {
-            if (epi.isDebugActive())
-                console.info('ElementNavigation: Removing catch-all click handling for navigation');
-            document.removeEventListener('click', onWindowClick);
-        };
-    });
-    return props.children;
+        window.scrollTo(0, 0);
+    }, [pathname]);
+    return null;
 };
-ElementNavigation.displayName = "Optimizely CMS: Generic click event handler";
 export const RoutedContent = (props) => {
     const ctx = useEpiserver();
     const switchProps = { location: props.location };
