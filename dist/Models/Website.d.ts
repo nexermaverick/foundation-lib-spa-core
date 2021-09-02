@@ -12,7 +12,11 @@ export declare type HostDefinition = {
     /**
      * The default language for the host
      */
-    language: null | string;
+    language: null | string | HostLanguage;
+};
+export declare type HostLanguage = {
+    displayName: string;
+    name: string;
 };
 /**
  * Episerver Website Model, as returned by the ContentDelivery API.

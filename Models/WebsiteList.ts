@@ -6,7 +6,8 @@ export const hostnameFilter : (website: Readonly<Website>, host: string, languag
     const matchHost = (website.hosts ? website.hosts.filter(h => {
         if (matchWildcard && h.name === '*') return true;
         if (h.name !== host) return false;
-        return language && h.language ? language === h.language : true;
+        const hostLang = h.language?(typeof h.language==='string'? h.language: typeof h.language === 'object' ? h.language.name:null):null;
+        return language && hostLang ? language === hostLang : true;
     }) : []).length > 0;
     return matchHost;
 }

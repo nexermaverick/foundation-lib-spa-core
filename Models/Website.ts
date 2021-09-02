@@ -15,7 +15,12 @@ export type HostDefinition = {
     /**
      * The default language for the host
      */
-    language: null | string
+    language: null | string | HostLanguage
+}
+
+export type HostLanguage = {
+    displayName:string,
+    name: string
 }
 
 /**
