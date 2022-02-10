@@ -34,7 +34,8 @@ export class IContentRepository extends EventEmitter<IPatchableRepositoryEvents<
     protected _config : IRepositoryConfig = {
         maxAge: 1440, // Default keep for one day = 24 * 60 = 1440 minutes
         policy: IRepositoryPolicy.NetworkFirst, // Default network first
-        debug: false // Default to disabling debug mode
+        debug: false, // Default to disabling debug mode
+        version: 5 // Default to version 5
     }
 
     /**
@@ -47,7 +48,7 @@ export class IContentRepository extends EventEmitter<IPatchableRepositoryEvents<
         super();
         this._api = api;
         this._config = { ...this._config, ...config }
-        this._storage = new IndexedDB("iContentRepository", 5, this.schemaUpgrade.bind(this));
+        this._storage = new IndexedDB("iContentRepository", config?.version || 5, this.schemaUpgrade.bind(this));
         if (this._storage.IsAvailable) this._storage.open();
 
         // Ingest server context into the database, if we have it

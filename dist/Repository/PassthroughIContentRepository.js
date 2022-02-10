@@ -18,7 +18,8 @@ export class PassthroughIContentRepository extends EventEmitter {
         this._config = {
             debug: false,
             maxAge: 0,
-            policy: IRepositoryPolicy.LocalStorageFirst
+            policy: IRepositoryPolicy.LocalStorageFirst,
+            version: 5
         };
         this._api = api;
         this._config = Object.assign(Object.assign({}, this._config), config);

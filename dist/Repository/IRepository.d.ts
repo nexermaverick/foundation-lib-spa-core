@@ -44,6 +44,12 @@ export declare type IRepositoryConfig = {
      * @var { boolean }
      */
     debug: boolean;
+    /**
+     * The verion number of the database,
+     *
+     * @var { number }
+     */
+    version: number;
 };
 export interface IReadOnlyRepository<KeyType, DataType> {
     /**

@@ -20,7 +20,8 @@ export class PassthroughIContentRepository extends EventEmitter<IPatchableReposi
     protected _config : IRepositoryConfig = {
         debug: false,
         maxAge: 0,
-        policy: IRepositoryPolicy.LocalStorageFirst
+        policy: IRepositoryPolicy.LocalStorageFirst,
+        version: 5
     };
     
     public constructor (api: IContentDeliveryAPI, config?: Partial<IRepositoryConfig>)

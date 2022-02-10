@@ -36,7 +36,8 @@ export class IContentRepository extends EventEmitter {
         this._config = {
             maxAge: 1440,
             policy: IRepositoryPolicy.NetworkFirst,
-            debug: false // Default to disabling debug mode
+            debug: false,
+            version: 5 // Default to version 5
         };
         this.schemaUpgrade = (db) => __awaiter(this, void 0, void 0, function* () {
             yield Promise.all([
@@ -53,7 +54,7 @@ export class IContentRepository extends EventEmitter {
         });
         this._api = api;
         this._config = Object.assign(Object.assign({}, this._config), config);
-        this._storage = new IndexedDB("iContentRepository", 5, this.schemaUpgrade.bind(this));
+        this._storage = new IndexedDB("iContentRepository", (config === null || config === void 0 ? void 0 : config.version) || 5, this.schemaUpgrade.bind(this));
         if (this._storage.IsAvailable)
             this._storage.open();
         // Ingest server context into the database, if we have it
